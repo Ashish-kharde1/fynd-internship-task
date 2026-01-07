@@ -34,7 +34,9 @@ export default function ReviewForm() {
         setResponse(null);
 
         try {
-            const res = await fetch('https://fynd-internship-task.onrender.com/submit-review', {
+            const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
+            const res = await fetch(`${API_URL}/submit-review`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

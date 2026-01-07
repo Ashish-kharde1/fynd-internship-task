@@ -18,9 +18,10 @@ app = FastAPI(lifespan=lifespan)
 
 # CORS Configuration
 origins = [
-    "http://localhost:3000", # User Dashboard
-    "http://localhost:3001", # Admin Dashboard
-    # Add production domains here later
+    "http://localhost:3000",
+    "http://localhost:3001",
+    "https://fynd-user-dashboard-kappa.vercel.app",
+    "https://fynd-admin-dashboard-five.vercel.app",
 ]
 
 app.add_middleware(
@@ -30,6 +31,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 @app.post("/submit-review", response_model=ReviewResponse)
 def submit_review(review_data: ReviewSubmit, session: Session = Depends(get_session)):

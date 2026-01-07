@@ -18,7 +18,10 @@ export default function AdminPage() {
     const fetchReviews = async () => {
         try {
             setError(null);
-            const res = await fetch('https://fynd-internship-task.onrender.com/admin/reviews');
+            const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
+            const res = await fetch(`${API_URL}/admin/reviews`);
+
             if (!res.ok) throw new Error('Failed to fetch reviews');
             const data = await res.json();
             setReviews(data);
