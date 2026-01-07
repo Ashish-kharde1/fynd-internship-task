@@ -1,12 +1,13 @@
 import { Star, Bot, Zap } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
 
 interface Review {
     id: number;
     rating: number;
-    review: str;
-    ai_summary?: str;
-    ai_recommended_action?: str;
-    created_at: str;
+    review: string;
+    ai_summary?: string;
+    ai_recommended_action?: string;
+    created_at: string;
 }
 
 interface ReviewsTableProps {
@@ -69,13 +70,21 @@ export default function ReviewsTable({ reviews }: ReviewsTableProps) {
                                     </td>
                                     <td className="px-6 py-4">
                                         {review.ai_recommended_action ? (
-                                            <div className="flex items-start gap-2">
-                                                <span className={`text-xs px-2.5 py-1 rounded-full border font-medium ${review.rating < 3
-                                                        ? 'bg-red-50 text-red-700 border-red-100'
-                                                        : 'bg-blue-50 text-blue-700 border-blue-100'
-                                                    }`}>
-                                                    {review.ai_recommended_action}
-                                                </span>
+                                            <div className={`text-xs p-3 rounded-lg border ${review.rating < 3
+                                                    ? 'bg-red-50 text-red-800 border-red-100 prose-red'
+                                                    : 'bg-blue-50 text-blue-800 border-blue-100 prose-blue'
+                                                }`}>
+                                                <div className="prose prose-xs max-w-none">
+                                                    <ReactMarkdown
+                                                        components={{
+                                                            ul: ({ children }) => <ul className="list-disc pl-4 m-0">{children}</ul>,
+                                                            li: ({ children }) => <li className="m-0">{children}</li>,
+                                                            p: ({ children }) => <p className="m-0 mb-1 last:mb-0">{children}</p>
+                                                        }}
+                                                    >
+                                                        {review.ai_recommended_action}
+                                                    </ReactMarkdown>
+                                                </div>
                                             </div>
                                         ) : (
                                             <span className="text-gray-400">-</span>

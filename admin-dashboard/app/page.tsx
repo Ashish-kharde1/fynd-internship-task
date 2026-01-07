@@ -3,11 +3,12 @@
 import { useEffect, useState } from 'react';
 import DashboardStats from '../components/DashboardStats';
 import ReviewsTable from '../components/ReviewsTable';
-import { LayoutDashboard } from 'lucide-react';
+import { LayoutDashboard, RefreshCw } from 'lucide-react';
 
 export default function AdminPage() {
     const [reviews, setReviews] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [refreshing, setRefreshing] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
@@ -16,7 +17,8 @@ export default function AdminPage() {
 
     const fetchReviews = async () => {
         try {
-            const res = await fetch('http://localhost:8000/admin/reviews');
+            setError(null);
+            const res = await fetch('https://fynd-internship-task.onrender.com/admin/reviews');
             if (!res.ok) throw new Error('Failed to fetch reviews');
             const data = await res.json();
             setReviews(data);
@@ -26,6 +28,12 @@ export default function AdminPage() {
         } finally {
             setLoading(false);
         }
+    };
+
+    const handleRefresh = async () => {
+        setRefreshing(true);
+        await fetchReviews();
+        setRefreshing(false);
     };
 
     if (loading) {
@@ -61,14 +69,24 @@ export default function AdminPage() {
             <div className="max-w-7xl mx-auto space-y-8">
 
                 {/* Header */}
-                <div className="flex items-center gap-3 mb-8">
-                    <div className="p-2.5 bg-gray-900 text-white rounded-lg shadow-sm">
-                        <LayoutDashboard className="w-6 h-6" />
+                <div className="flex items-center justify-between mb-8">
+                    <div className="flex items-center gap-3">
+                        <div className="p-2.5 bg-gray-900 text-white rounded-lg shadow-sm">
+                            <LayoutDashboard className="w-6 h-6" />
+                        </div>
+                        <div>
+                            <h1 className="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
+                            <p className="text-gray-900 text-sm">Monitor feedback and AI insights</p>
+                        </div>
                     </div>
-                    <div>
-                        <h1 className="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
-                        <p className="text-gray-900 text-sm">Monitor feedback and AI insights</p>
-                    </div>
+                    <button
+                        onClick={handleRefresh}
+                        disabled={refreshing}
+                        className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all shadow-sm disabled:opacity-50"
+                    >
+                        <RefreshCw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
+                        Refresh
+                    </button>
                 </div>
 
                 {/* Stats */}
