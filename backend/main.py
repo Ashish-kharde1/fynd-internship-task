@@ -62,3 +62,9 @@ def get_admin_reviews(session: Session = Depends(get_session)):
     statement = select(Review).order_by(Review.created_at.desc())
     reviews = session.exec(statement).all()
     return reviews
+
+
+@app.get("/health")
+def health_check():
+    return {"status": "ok"}
+
