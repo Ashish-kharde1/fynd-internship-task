@@ -54,6 +54,7 @@ The backend is hosted on the **Render Free Tier**. Please note the following exp
 *   **Cold Starts**: Render automatically spins down specific services after 15 minutes of inactivity to conserve resources.
 *   **Initial Latency**: The **first request** after a period of inactivity may take **30–60 seconds** to process while the container spins back up.
 *   **Normal Performance**: Subsequent requests will be fast and responsive once the service is active.
+*   **Data Persistence Note**: The backend uses SQLite for simplicity. When deployed on Render free tier, the filesystem is **ephemeral** and data may reset after service inactivity or restarts. This is an expected limitation of the free tier and does not affect application logic.
 
 **This is a documented limitation of the free hosting tier and does not reflect an application performance issue.**
 
